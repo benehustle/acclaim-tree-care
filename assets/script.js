@@ -90,16 +90,66 @@ function initNav() {
 /* --------------------------------------------------------------------------
    setActiveNavLink — match pathname to nav hrefs
    -------------------------------------------------------------------------- */
+const SERVICE_PAGE_FILES = [
+  "tree-removal-large-small.html",
+  "tree-pruning-lopping-maintenance.html",
+  "stump-grinding-removal.html",
+  "land-block-clearing.html",
+  "emergency-storm-damage-response.html",
+];
+
 function setActiveNavLink() {
   let path = window.location.pathname || "";
   const file = path.split("/").pop() || "index.html";
   const normalized = file === "" || file === "/" ? "index.html" : file;
 
+  const isServicesHub = normalized === "services.html";
+  const isServiceChild = SERVICE_PAGE_FILES.includes(normalized);
+
   document.querySelectorAll(".nav-desktop__links a, .drawer__links a").forEach((link) => {
     const href = link.getAttribute("href");
     if (!href || href.startsWith("tel:") || href.startsWith("#")) return;
     const linkFile = href.split("/").pop();
-    if (linkFile === normalized || (normalized === "index.html" && (linkFile === "index.html" || href === "index.html" || href === "./index.html"))) {
+    let match =
+      linkFile === normalized ||
+      (normalized === "index.html" &&
+        (linkFile === "index.html" || href === "index.html" || href === "./index.html"));
+
+    if (link.classList.contains("nav-dropdown__trigger")) {
+      match = isServicesHub || isServiceChild;
+    }
+
+    if (match) {
+      link.classList.add("is-active");
+    } else {
+      link.classList.remove("is-active");
+    }
+  });
+
+  document.querySelectorAll(".nav-dropdown__panel a").forEach((link) => {
+    const href = link.getAttribute("href");
+    if (!href) return;
+    const linkFile = href.split("/").pop();
+    if (linkFile === normalized) {
+      link.classList.add("is-active");
+    } else {
+      link.classList.remove("is-active");
+    }
+  });
+
+  document.querySelectorAll(".drawer__sub a").forEach((link) => {
+    const href = link.getAttribute("href");
+    if (!href) return;
+    const linkFile = href.split("/").pop();
+    if (linkFile === normalized) {
+      link.classList.add("is-active");
+    } else {
+      link.classList.remove("is-active");
+    }
+  });
+
+  document.querySelectorAll('.drawer__group > a[href="services.html"]').forEach((link) => {
+    if (isServicesHub || isServiceChild) {
       link.classList.add("is-active");
     } else {
       link.classList.remove("is-active");
