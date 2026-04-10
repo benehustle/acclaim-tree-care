@@ -910,6 +910,20 @@ img {
   flex-grow: 1;
 }
 
+.service-card--media .service-card__inner {
+  text-align: center;
+  align-items: center;
+}
+
+.service-card--media .service-card__icon {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.service-card--media .service-card__footer {
+  justify-content: center;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .service-card--media:hover .service-card__media img {
     transform: none;
@@ -1038,11 +1052,40 @@ img {
   .grid-services {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  /* Centre a lone last card in a 2-column grid (e.g. 5th service on services.html) */
+  .grid-services:not(.grid-services--home) > :nth-last-child(1):nth-child(odd) {
+    grid-column: 1 / -1;
+    justify-self: center;
+    max-width: calc((100% - 1.5rem) / 2);
+  }
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  /* Home services: 5th card alone before 6-col centred pair layout */
+  .grid-services--home > :nth-child(5):nth-last-child(1) {
+    grid-column: 1 / -1;
+    justify-self: center;
+    max-width: calc((100% - 1.5rem) / 2);
+  }
 }
 
 @media (min-width: 1024px) {
+  /* 6-column grid so row 2 (two cards) sits centred under three above */
   .grid-services--home {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .grid-services--home > * {
+    grid-column: span 2;
+  }
+
+  .grid-services--home > :nth-child(4) {
+    grid-column: 2 / 4;
+  }
+
+  .grid-services--home > :nth-child(5) {
+    grid-column: 4 / 6;
   }
 }
 
@@ -1051,15 +1094,43 @@ img {
   gap: 1.25rem;
 }
 
+.locations-section .section-heading {
+  text-align: center;
+  max-width: 42rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.locations-section .location-card {
+  text-align: center;
+}
+
 @media (min-width: 640px) {
   .grid-locations {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
+@media (min-width: 640px) and (max-width: 1023px) {
+  /* 7 suburbs in 2 cols: centre the lone last card */
+  .grid-locations > :nth-child(7):nth-last-child(1) {
+    grid-column: 1 / -1;
+    justify-self: center;
+    max-width: calc((100% - 1.25rem) / 2);
+  }
+}
+
 @media (min-width: 1024px) {
   .grid-locations {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .grid-locations > * {
+    grid-column: span 2;
+  }
+
+  .grid-locations > :nth-child(7) {
+    grid-column: 3 / 5;
   }
 }
 
